@@ -22,8 +22,18 @@ namespace EmployeeAdminPortal.Controllers
         public IActionResult GetAllEmployees()
         {
             var allEmployees = dbContext.Employees.ToList();
-
             return Ok(allEmployees);
+        }
+
+        [HttpGet]
+        [Route("{id:guid}")]
+        public IActionResult GetEmployeeById(Guid id) 
+        {
+            var employee = dbContext.Employees.Find(id);
+            if (employee == null)
+                return NotFound();
+            
+            return Ok(employee);
         }
 
         [HttpPost]
@@ -36,7 +46,6 @@ namespace EmployeeAdminPortal.Controllers
                 Phone = addEmployeeDto.Phone,
                 Salary = addEmployeeDto.Salary
             };
-
             dbContext.Employees.Add(employeeEntity);
             dbContext.SaveChanges();
 
